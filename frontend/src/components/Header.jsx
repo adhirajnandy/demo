@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import { FaShoppingCart, FaUser } from 'react-icons/fa';
+import { FaShoppingCart} from 'react-icons/fa';
+import { VscAccount } from "react-icons/vsc";
 import { BsBackpack } from "react-icons/bs";
 import { LinkContainer } from 'react-router-bootstrap'
 
@@ -11,7 +12,7 @@ const Header = () => {
             <Container>
                 <LinkContainer to='/'>
                     <Navbar.Brand >
-                        <BsBackpack/> EasyShop
+                        <BsBackpack size={30}/> <span className="fw-bold">EasyShop</span>
                     </Navbar.Brand>
                 </LinkContainer>
                 
@@ -20,13 +21,13 @@ const Header = () => {
                     <Nav className='ms-auto'>
                         <LinkContainer to='/cart'>
                             <Nav.Link>
-                                <FaShoppingCart /> Cart
+                                <FaShoppingCart size={25} /> Cart
                             </Nav.Link>
                         </LinkContainer>
                         
                         <LinkContainer to='/login'>
                             <Nav.Link>
-                                <FaUser /> Sign In
+                                <VscAccount size={25}/> Sign In
                             </Nav.Link>
                         </LinkContainer>
                     </Nav>

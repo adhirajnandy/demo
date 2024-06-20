@@ -1,8 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
-import products from './data/products.js';
+import connectDB from './config/db.js';
+
 const port = process.env.PORT || 5000;
+import productRoutes from './routes/productRoutes.js'
+
+//for making connection to MongoDB
+connectDB();
 
 const app = express();
 
@@ -10,19 +15,8 @@ app.get('/',(req,res) => {
     res.send('api is running');
 });
 
-app.get('/api/products', (req,res) => {
+app.use('/api/products', productRoutes);
 
-    //to fetch all the products from the products.js file
 
-    res.json(products);
-})
-
-app.get('/api/products/:id',(req,res) => {
-
-    // we are using find function to find a particular product as per the product id
-
-    const product = products.find((p) => p._id === req.params.id);
-    res.json(product);
-})
 
 app.listen(port, () => console.log(`Server running on ${port}`))

@@ -8,7 +8,7 @@ const router = express.Router();
 router.get('/', asyncHandler(async(req,res) => {
 
     //to fetch all the products from the products.js file
-    const products = await Product.find({})
+    const products = await Product.find({});
     res.json(products);
 }));
 
@@ -20,9 +20,12 @@ router.get('/:id',asyncHandler(async(req,res) => {
 
     if(product){
         return res.json(product);
+    }else{
+        res.status(404);
+        throw new Error('Product Not Found');
     }
 
-    res.status(404).json({message: 'Product not Found'});
+    
 }));
 
 

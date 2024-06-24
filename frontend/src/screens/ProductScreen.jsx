@@ -110,6 +110,7 @@ const ProductScreen = () => {
               )}
               <ListGroup.Item>
                 <Button className='btn-block' type='button' disabled={product.countInStock === 0} onClick= {addToCartHandler}>
+                  {/* add to cart Handler should be passed without parenthesis!! */}
                   <span className='fw-medium'>Add to Cart</span>
                 </Button>
               </ListGroup.Item>

@@ -13,6 +13,12 @@ connectDB();
 
 const app = express();
 
+//Body parser middleware
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+//These two lines of code allows us to get the body data that we send while user authorization 
+//that is email and password that we send while authenticating the user
+
 app.get('/',(req,res) => {
     res.send('api is running');
 });

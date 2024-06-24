@@ -1,12 +1,27 @@
 import asyncHandler from "../middleware/asyncHandler.js";
-import userModel from "../models/userModel.js";
+import User from "../models/userModel.js";
 
 //Authorization of user and getting the token
 //route - /api/users/login - POST request
 //access - Public
 
 const authUser = asyncHandler(async(req,res) => {
-    res.send('User Auth');
+    // destructuring the email and password from req.body
+    const {email, password} = req.body;
+    // check for the user in the database
+    const user = await User.findOne({email});
+    if(user && (await user.matchPassword(password))){
+        res.json({
+            _id: user.id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+        });
+    }
+    else{
+        res.status(401);
+        throw new Error('Invalid email or password');
+    }
 });
 
 //Registration of user 

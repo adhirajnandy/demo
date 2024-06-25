@@ -12,7 +12,7 @@ import User from '../models/userModel.js';
 
         try {
             const decoded = jwt.verify(token,process.env.JWT_SECRET);
-            req.user = await User.findById(decoded.userId).select('-passwprd');
+            req.user = await User.findById(decoded.userId).select('-password');
             next();
         } catch (error) {
             console.log(error);

@@ -17,6 +17,7 @@ const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
 
+  //this is required to remove our http only cookie
   const [logoutApiCall] = useLogoutMutation();
 
 
@@ -53,7 +54,7 @@ const Header = () => {
                   <FaShoppingCart size={25} style={{ color: '#ffffff' }} /> <span className="ms-1">Cart</span>
                   {
                     cartItems.length > 0 && (
-                      <Badge pill bg='danger' style={{
+                      <Badge pill bg='success' style={{
                         marginLeft:'5px'
                       }}>
                           {cartItems.reduce((a,c) => a + c.qty,0)}

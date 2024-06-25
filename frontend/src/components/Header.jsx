@@ -4,15 +4,34 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { VscAccount } from "react-icons/vsc";
 import { BsBackpack } from "react-icons/bs";
 import { LinkContainer } from 'react-router-bootstrap';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useLoginMutation, useLogoutMutation } from '../slices/usersApiSlice';
+import { removeCredentials } from '../slices/authSlice';
+import { useNavigate } from 'react-router-dom';
+
 
 const Header = () => {
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { cartItems } = useSelector((state) => state.cart);
   const { userInfo } = useSelector((state) => state.auth);
 
-  const logoutHandler =() => {
-    console.log('logout');
+  const [logoutApiCall] = useLogoutMutation();
+
+
+  const logoutHandler = async() => {
+    try {
+      //since it will return us a promise we will add .unwrap onto it
+      await logoutApiCall().unwrap();
+      //to remove the local stuff
+      dispatch(removeCredentials());
+      //navigating the user to the login page
+      navigate('/login');
+    } catch (error) {
+      console.log(error);
+    }
+    
   }
 
 

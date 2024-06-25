@@ -70,3 +70,13 @@ table th {
   transform: scale(1.05);
 }
 
+.nav-link-custom {
+  color: #333; /* Darker text color */
+  font-weight: bold; /* Example: Increase font weight for emphasis */
+}
+
+.nav-link-disabled {
+  color: #ccc; /* Lighter text color for disabled links */
+  cursor: not-allowed; /* Example: Change cursor to indicate disabled state */
+}
+

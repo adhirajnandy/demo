@@ -42,7 +42,7 @@ const CartScreen = () => {
                 ) : (
                     <ListGroup variant='flush'>
                         {cartItems.map((item) => (
-                            <ListGroup.Item key={item._id}>
+                            <ListGroup.Item key={item._id} className='border rounded my-1'>
                                 <Row>
                                     <Col md={2}>
                                         <Image src={item.image} alt={item.name} fluid rounded></Image>

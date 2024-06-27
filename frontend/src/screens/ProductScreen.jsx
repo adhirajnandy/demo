@@ -49,7 +49,7 @@ const ProductScreen = () => {
             <Col md={4}>
               <ListGroup variant='flush'>
                 <ListGroup.Item className='border rounded'>
-                  <h3>{product.name}</h3>
+                  <h3 className='fw-bolder'>{product.name}</h3>
                 </ListGroup.Item>
                 <ListGroup.Item className='border rounded my-1'>
                   <Rating value={product.rating} text={`${product.numReviews} reviews`} />
@@ -58,7 +58,7 @@ const ProductScreen = () => {
                   Price: $ {product.price}
                 </ListGroup.Item>
                 <ListGroup.Item className='border rounded'>
-                  <div className='fw-medium'>Description:</div>
+                  <div className="fw-bolder">Description:</div>
                   <div>{product.description}</div>
                 </ListGroup.Item>
               </ListGroup>
@@ -69,7 +69,7 @@ const ProductScreen = () => {
                 <ListGroup variant='flush'>
                   <ListGroup.Item>
                     <Row>
-                      <Col className='fw-medium'>Price:</Col>
+                      <Col className="fw-bolder">Price:</Col>
                       <Col>
                         <div className='fw-bold'>$ {product.price}</div>
                       </Col>
@@ -77,7 +77,7 @@ const ProductScreen = () => {
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <Row>
-                      <Col className='fw-medium'>Status:</Col>
+                      <Col className="fw-bolder">Status:</Col>
                       <Col>
                         <div className={product.countInStock > 0 ? 'fw-bold text-success' : 'fw-bold text-danger'}>
                           {product.countInStock > 0 ? 'In Stock' : 'Out of Stock'}
@@ -89,7 +89,7 @@ const ProductScreen = () => {
                   {product.countInStock > 0 && (
                     <ListGroup.Item>
                       <Row>
-                        <Col className='fw-medium'>
+                        <Col className="fw-bolder">
                           Qty: 
                         </Col>
                         <Col>

@@ -33,10 +33,10 @@ const ShippingScreen = () => {
   return(
     <FormContainer>
         <CheckoutSteps step1 step2/>
-        <h1>Shipping</h1>
+        <h1 className="fw-bolder">Shipping</h1>
         <Form onSubmit={submitHandler}>
             <Form.Group controlId='address' className='my-2'>
-                <FormLabel>Address: </FormLabel>
+                <FormLabel className="fw-bolder">Address: </FormLabel>
                 <Form.Control
                     type='text'
                     placeholder='Enter address'
@@ -45,7 +45,7 @@ const ShippingScreen = () => {
                 ></Form.Control>
             </Form.Group>
             <Form.Group controlId='city' className='my-2'>
-                <FormLabel >City: </FormLabel>
+                <FormLabel className="fw-bolder">City: </FormLabel>
                 <Form.Control
                     type='text'
                     placeholder='Enter city'
@@ -55,7 +55,7 @@ const ShippingScreen = () => {
                 ></Form.Control>
             </Form.Group>
             <Form.Group controlId='postalCode' className='my-2'>
-                <FormLabel>Postal Code: </FormLabel>
+                <FormLabel className="fw-bolder">Postal Code: </FormLabel>
                 <Form.Control
                     type='text'
                     placeholder='Enter postal code'
@@ -65,7 +65,7 @@ const ShippingScreen = () => {
                 ></Form.Control>
             </Form.Group>
             <Form.Group controlId='country' className='my-2'>
-                <FormLabel>Country: </FormLabel>
+                <FormLabel className="fw-bolder">Country: </FormLabel>
                 <Form.Control
                     type='text'
                     placeholder='Enter country'

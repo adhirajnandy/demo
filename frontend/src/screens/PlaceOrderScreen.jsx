@@ -83,7 +83,7 @@ const PlaceOrderScreen = () => {
                                             </Col>
                                             <Col md={4}
                                             >
-                                                {item.qty} x &#8377; {item.price} = &#8377; {item.qty * item.price}
+                                                {item.qty} x $ {item.price} = $ {item.qty * item.price}
                                             </Col>
                                         </Row>
                                     </ListGroup.Item>
@@ -105,7 +105,7 @@ const PlaceOrderScreen = () => {
                                     Items: 
                                 </Col>
                                 <Col>
-                                    &#8377; {cart.itemsPrice}
+                                    $ {cart.itemsPrice}
                                 </Col>
                             </Row>
                         </ListGroup.Item>
@@ -115,7 +115,7 @@ const PlaceOrderScreen = () => {
                                     Shipping: 
                                 </Col>
                                 <Col>
-                                    &#8377; {cart.shippingPrice}
+                                    $ {cart.shippingPrice}
                                 </Col>
                             </Row>
                         </ListGroup.Item>
@@ -125,7 +125,7 @@ const PlaceOrderScreen = () => {
                                     Tax: 
                                 </Col>
                                 <Col>
-                                    &#8377; {cart.taxPrice}
+                                    $ {cart.taxPrice}
                                 </Col>
                             </Row>
                         </ListGroup.Item>
@@ -135,7 +135,7 @@ const PlaceOrderScreen = () => {
                                     Total: 
                                 </Col>
                                 <Col>
-                                    &#8377; {cart.totalPrice}
+                                    $ {cart.totalPrice}
                                 </Col>
                             </Row>
                         </ListGroup.Item>

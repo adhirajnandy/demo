@@ -93,3 +93,11 @@ table th {
   cursor: not-allowed; /* Example: Change cursor to indicate disabled state */
 }
 
+/* CustomTable.css */
+.custom-table {
+  border: 2px solid black; /* Slightly bolder border */
+}
+
+.custom-table tbody tr:hover {
+  background-color: rgb(184, 184, 184); /* Darker hover effect */
+}

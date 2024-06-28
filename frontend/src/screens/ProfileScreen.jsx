@@ -9,7 +9,7 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { setCredentials } from '../slices/authSlice';
 import { useGetMyOrdersQuery } from '../slices/ordersApiSlice';
-import { FaTimes, FaCheck } from 'react-icons/fa';
+import { FaTimesCircle, FaCheckCircle } from 'react-icons/fa';
 
 const ProfileScreen = () => {
 
@@ -117,16 +117,16 @@ const ProfileScreen = () => {
                                 <td className='fw-semibold'>${order.totalPrice}</td>
                                 <td >
                                     {order.isPaid ? (
-                                        <FaCheck style={{color: 'green'}}/>
+                                        <FaCheckCircle style={{color: 'green'}}/>
                                     ) : (
-                                        <FaTimes style={{color: 'red'}}/>
+                                        <FaTimesCircle style={{color: 'red'}}/>
                                     )}
                                 </td>
                                 <td>
                                     {order.isDelivered ? (
-                                        <FaCheck style={{color: 'green'}}/>
+                                        <FaCheckCircle style={{color: 'green'}}/>
                                     ) : (
-                                        <FaTimes style={{color: 'red'}}/>
+                                        <FaTimesCircle style={{color: 'red'}}/>
                                     )}
                                 </td>
                                 <td>

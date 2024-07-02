@@ -15,7 +15,7 @@ const OrderListScreen = () => {
   return (
     <>
       <h1 className='fw-bolder'>Orders</h1>
-      {isLoading ? <Loader /> : error ? <Message variant= 'danger'>{error}</Message> : 
+      {isLoading ? <Loader /> : error ? <Message variant= 'danger'>{error?.data?.message}</Message> : 
         (
           <Table bordered hover responsive className='table-sm custom-table'>
             <thead>

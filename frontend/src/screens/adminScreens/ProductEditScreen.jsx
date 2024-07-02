@@ -4,7 +4,7 @@ import { Form, Button } from 'react-bootstrap';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import FormContainer from '../../components/FormContainer';
-import { useGetProductDetailsQuery, useUpdateProductMutation } from '../../slices/productsApiSlice';
+import { useGetProductDetailsQuery, useUpdateProductMutation, useUploadProductImageMutation } from '../../slices/productsApiSlice';
 import { toast } from 'react-toastify';
 
 const ProductEditScreen = () => {
@@ -21,6 +21,8 @@ const ProductEditScreen = () => {
     const { data: product, isLoading, refetch, error } = useGetProductDetailsQuery(productId);
 
     const [updateProduct, { isLoading: loadingUpdate }] = useUpdateProductMutation();
+
+    const [uploadProductImage, { isLoading: loadingUpload }] = useUploadProductImageMutation();
 
     const navigate = useNavigate();
 
@@ -55,6 +57,18 @@ const ProductEditScreen = () => {
           } catch (err) {
             toast.error(err?.data?.message || err.error);
           }
+    };
+
+    const uploadFileHandler = async(e) => {
+        const formData = new FormData();
+        formData.append('image', e.target.files[0]);
+        try {
+            const res = await uploadProductImage(formData).unwrap();
+            toast.success(res.message);
+            setImage(res.image);
+        } catch (err) {
+            toast.error(err?.data?.message || err.error);
+        }
     }
 
     return (
@@ -74,7 +88,6 @@ const ProductEditScreen = () => {
                                 type='name'
                                 placeholder='Enter name'
                                 value={name}
-                                
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </Form.Group>
@@ -84,7 +97,6 @@ const ProductEditScreen = () => {
                                 type='number'
                                 placeholder='Enter price'
                                 value={price}
-                                
                                 onChange={(e) => setPrice(e.target.value)}
                             />
                         </Form.Group>
@@ -95,19 +107,21 @@ const ProductEditScreen = () => {
                                 type='text'
                                 placeholder='Enter image url'
                                 value={image}
-                                
                                 onChange={(e) => setImage(e.target.value)}
-                            />
+                            ></Form.Control>
+                            <Form.Control
+                                type='file'
+                                label='Choose file'
+                                onChange={uploadFileHandler}
+                            ></Form.Control>
                         </Form.Group>
 
-                        {/* IMAGE INPUT PLACEHOLDER */}
                         <Form.Group controlId='brand' className='my-2'>
                             <Form.Label className='fw-semibold'>Brand:</Form.Label>
                             <Form.Control
                                 type='text'
                                 placeholder='Enter brand'
                                 value={brand}
-                                
                                 onChange={(e) => setBrand(e.target.value)}
                             />
                         </Form.Group>
@@ -117,7 +131,6 @@ const ProductEditScreen = () => {
                                 type='number'
                                 placeholder='Enter stock count'
                                 value={countInStock}
-                                
                                 onChange={(e) => setCountInStock(e.target.value)}
                             />
                         </Form.Group>
@@ -127,7 +140,6 @@ const ProductEditScreen = () => {
                                 type='text'
                                 placeholder='Enter category'
                                 value={category}
-                                
                                 onChange={(e) => setCategory(e.target.value)}
                             />
                         </Form.Group>
@@ -138,7 +150,6 @@ const ProductEditScreen = () => {
                                 rows={5}        // Number of visible rows
                                 placeholder='Enter product description'
                                 value={description}
-                                
                                 onChange={(e) => setDescription(e.target.value)}
                             />
                         </Form.Group>

@@ -96,11 +96,16 @@ const ProductListScreen = () => {
                             ))}
                     </tbody>
                 </Table>
-                <Paginate
-                    pages={data.pages}
-                    page={data.page}
-                    isAdmin={true}
-                />
+                
+                <Row className='justify-content-center'>
+                    <Col xs='auto'>
+                        <Paginate
+                            pages={data.pages}
+                            page={data.page}
+                            isAdmin={true}
+                        />
+                    </Col>
+                </Row>
             </>
         )}
     </>

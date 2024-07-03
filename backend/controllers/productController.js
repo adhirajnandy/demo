@@ -4,8 +4,13 @@ import Product  from "../models/productModel.js";
 
 // Fetching all products from the database 
 const getProducts = asyncHandler(async (req,res) => {
-    const products = await Product.find({});
-    res.json(products);
+    const pageSize = 2; //Limiting the number of products that are shown in the home page
+    const page = Number(req.query.pageNumber) || 1; //fetching the page number from the query
+    const count = await Product.countDocuments(); // To provide us the total number of Products
+    const products = await Product.find({})
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+    res.json({products, page, pages: Math.ceil(count / pageSize)});//passing an object consisting of three things that is the products, page and the total number of pages that are required
 });
 
 //Fetching products by Id

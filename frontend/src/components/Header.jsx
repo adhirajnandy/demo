@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLoginMutation, useLogoutMutation } from '../slices/usersApiSlice';
 import { removeCredentials } from '../slices/authSlice';
 import { useNavigate } from 'react-router-dom';
+import SearchBox from './SearchBox';
 
 
 const Header = () => {
@@ -45,10 +46,11 @@ const Header = () => {
               <BsBackpack size={30} style={{ color: '#ffffff' }} /> <span className="fw-bold ms-2" style={{ color: '#ffffff' }}>EasyShop</span>
             </Navbar.Brand>
           </LinkContainer>
-
+          
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav' className='justify-content-end'>
             <Nav className='align-items-center'>
+            <SearchBox />
               <LinkContainer to='/cart'>
                 <Nav.Link className="d-flex align-items-center text-light">
                   <FaShoppingCart size={25} style={{ color: '#ffffff' }} /> <span className="ms-1">Cart</span>

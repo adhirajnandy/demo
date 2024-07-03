@@ -4,7 +4,7 @@ import Product  from "../models/productModel.js";
 
 // Fetching all products from the database 
 const getProducts = asyncHandler(async (req,res) => {
-    const pageSize = 2; //Limiting the number of products that are shown in the home page
+    const pageSize = 4; //Limiting the number of products that are shown in the home page
     const page = Number(req.query.pageNumber) || 1; //fetching the page number from the query
     const count = await Product.countDocuments(); // To provide us the total number of Products
     const products = await Product.find({})

@@ -2,12 +2,11 @@ main {
   min-height: 80vh;
 }
 
-/* In your main CSS file or a dedicated styles file */
 
 body {
   background-image: url('../login_image2.jpg'); /* Replace with your image path */
-  background-size: cover; /* Cover the entire background */
-  background-position: center; /* Center the background image */
+  background-size: cover; 
+  background-position: center; 
   background-repeat: no-repeat; /* Prevent repeating the background */
   /* height: 100vh; Ensure the body takes up the full viewport height */
   margin: 0; /* Remove default margin */

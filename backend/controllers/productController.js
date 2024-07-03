@@ -4,7 +4,7 @@ import Product  from "../models/productModel.js";
 
 // Fetching all products from the database 
 const getProducts = asyncHandler(async (req,res) => {
-    const pageSize = 8; //Limiting the number of products that are shown in the home page
+    const pageSize = 8 //Limiting the number of products that are shown in the home page
     
     const page = Number(req.query.pageNumber) || 1; //fetching the page number from the query
     
@@ -137,4 +137,14 @@ const createProductReview = asyncHandler(async (req,res) => {
     }
 });
 
-export { getProducts, getProductById, createProduct, updateProduct, deleteProduct, createProductReview };
+//Getting top rated products
+//route - GET /api/products/top
+//access - public
+
+const getTopProducts = asyncHandler(async (req,res) => {
+    const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+    res.status(200).json(products);
+});
+
+export { getProducts, getProductById, createProduct, updateProduct, deleteProduct, createProductReview, getTopProducts };

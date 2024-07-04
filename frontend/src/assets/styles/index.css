@@ -4,8 +4,8 @@ main {
 
 
 body {
-  background-image: url('../login_image2.jpg'); /* Replace with your image path */
-  background-size: cover; 
+  /* background-image: url('../login_image2.jpg'); Replace with your image path */
+  background-size: cover; /* Cover the entire background */
   background-position: center; 
   background-repeat: no-repeat; /* Prevent repeating the background */
   /* height: 100vh; Ensure the body takes up the full viewport height */

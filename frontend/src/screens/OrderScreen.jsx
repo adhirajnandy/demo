@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDeliverOrderMutation } from "../slices/ordersApiSlice";
+import { useCancelOrderMutation } from "../slices/ordersApiSlice";
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
@@ -23,6 +24,8 @@ const OrderScreen = () => {
     const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
     //Fetching the userInfo using the global selector
     const { userInfo } = useSelector((state) => state.auth);
+    //For cancelling an order
+    const [cancelOrder] = useCancelOrderMutation();
 
     useEffect(() => {
         if (!errorPayPal && !loadingPayPal && paypal.clientId) {
@@ -83,6 +86,19 @@ const OrderScreen = () => {
             toast.error(err?.data?.message || err.message);
         }
     }
+ 
+    const cancelOrderHandler = async() => {
+        if (window.confirm('Are you sure you want to cancel your order?')) {
+            try {
+                await cancelOrder(orderId);
+                refetch();
+                toast.success('Order Cancelled');
+            } catch (err) {
+                toast.error(err?.data?.message || err.message)
+            }
+        }
+        
+    }
 
     return (
         isLoading ? (<Loader />) : error ? (<Message variant="danger" />) : (
@@ -112,6 +128,11 @@ const OrderScreen = () => {
                                         <Message variant="danger">Not Paid</Message>
                                     )}
                                 </ListGroup.Item>
+                                {order.isCancelled && (
+                                    <ListGroup.Item>
+                                        <h2 className="fw-bolder">Order Status: </h2>
+                                        <Message variant='success'>Order Cancelled Successfully</Message>
+                                    </ListGroup.Item>)}
                                 <ListGroup.Item>
                                     <h2 className="fw-bolder">Order Items</h2>
                                     {order.orderItems.map((item, index) => (
@@ -155,7 +176,7 @@ const OrderScreen = () => {
                                         <Col>${order.totalPrice}</Col>
                                     </Row>
                                 </ListGroup.Item>
-                                {!order.isPaid && (
+                                {!order.isPaid && !order.isCancelled && (
                                     <ListGroup.Item>
                                         {loadingPay || isPending ? <Loader /> : (
                                             <PayPalButtons
@@ -167,10 +188,20 @@ const OrderScreen = () => {
                                     </ListGroup.Item>
                                 )}
                                 {loadingDeliver && <Loader/>}
-                                {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && !order.isCancelled && (
                                     <ListGroup.Item>
                                         <Button type="button" className="btn btn-block" onClick={deliverOrderHandler}>
                                             Mark As Delivered
+                                        </Button>
+                                    </ListGroup.Item>
+                                )}
+                                {!order.isCancelled && !order.isDelivered && (
+                                    <ListGroup.Item>
+                                        <Button 
+                                        type="button" 
+                                        className="btn btn-block" 
+                                        onClick={cancelOrderHandler}>
+                                            Cancel Order
                                         </Button>
                                     </ListGroup.Item>
                                 )}

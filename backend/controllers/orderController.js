@@ -126,11 +126,33 @@ const getOrders = asyncHandler(async (req,res) => {
     res.status(200).json(orders);
 });
 
+// Description: Cancel an order
+// Route: PUT /api/orders/:id/cancel
+// Access: Private
+const cancelOrder = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        order.isCancelled = true;
+        order.cancelledAt = Date.now();
+        order.cancellationReason = req.body.cancellationReason || ''; // Optional: Capture cancellation reason
+
+        const cancelledOrder = await order.save();
+
+        res.status(200).json(cancelledOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+});
+
+
 export {
     addOrderItems,
     getMyOrders,
     getOrderById,
     updateOrderToPaid,
     updateOrderToDelivered,
-    getOrders
+    getOrders,
+    cancelOrder
 }

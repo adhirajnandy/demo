@@ -1,6 +1,6 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button, Tab } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import { FaTimesCircle, FaCheckCircle } from 'react-icons/fa';
 import { useGetOrdersQuery } from '../../slices/ordersApiSlice';
 import Message from '../../components/Message';
@@ -26,6 +26,7 @@ const OrderListScreen = () => {
                 <th>TOTAL</th>
                 <th>PAID</th>
                 <th>DELIVERED</th>
+                <th>CANCELLATION STATUS</th>
                 <th>ORDER DETAILS</th>
 
               </tr>
@@ -46,6 +47,13 @@ const OrderListScreen = () => {
                   </td >
                   <td className='fw-semibold'>
                     {order.isDelivered ? (
+                    <FaCheckCircle style={{color:'green'}}/>
+                  ) : (
+                    <FaTimesCircle style={{color:'red'}}/>
+                  )}
+                  </td>
+                  <td className='fw-semibold'>
+                    {order.isCancelled ? (
                     <FaCheckCircle style={{color:'green'}}/>
                   ) : (
                     <FaTimesCircle style={{color:'red'}}/>

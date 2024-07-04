@@ -6,7 +6,8 @@ import {
     updateOrderToPaid,
     getOrderById,
     addOrderItems,
-    cancelOrder
+    cancelOrder,
+    exportOrdersToCSV
 } from '../controllers/orderController.js';
 import {protect, admin} from '../middleware/authMiddleware.js';
 
@@ -18,7 +19,6 @@ router.route('/:id').get(protect, getOrderById);
 router.route('/:id/pay').put(protect,updateOrderToPaid);
 router.route('/:id/deliver').put(protect,admin,updateOrderToDelivered);
 router.route('/:id/cancel').put(protect,cancelOrder);
-
-
+router.route('/export/csv').get(protect,admin, exportOrdersToCSV);
 
 export default router;

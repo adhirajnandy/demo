@@ -11,7 +11,7 @@ const errorHandler = (err,req,res,next) => {
 
     // Check for Mongoose bad Object Id
     if(err.name === 'CastError' && err.kind === 'ObjectId'){
-        message = `Product not found`;
+        message = `Order not found`;
         statusCode = 404;
     }
 

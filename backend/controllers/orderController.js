@@ -1,6 +1,7 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Order from '../models/orderModel.js';
-
+import { parse } from "json2csv";
+import fs from 'fs';
 //Description : Create new order
 //Route : POST /api/orders
 //access : Private
@@ -146,6 +147,66 @@ const cancelOrder = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Export all orders to CSV
+// @route   GET /api/orders/export/csv
+// @access  Private/Admin
+const exportOrdersToCSV = asyncHandler(async (req, res) => {
+    const fields = [
+        'id',
+        { label: 'User ID', value: 'user._id' },
+        'shippingAddress',
+        'paymentMethod',
+        'itemsPrice',
+        'taxPrice',
+        'shippingPrice',
+        'totalPrice',
+        'createdAt',
+        'updatedAt',
+        'isPaid',
+        'paidAt',
+        'isDelivered',
+        'deliveredAt',
+        'isCancelled',
+        'cancelledAt',
+        'cancellationReason',
+    ];
+
+    try {
+        const orders = await Order.find().populate('user', 'id name').exec();
+
+        if (orders.length === 0) {
+            return res.status(404).json({ message: 'No orders found' });
+        }
+
+        const jsonOrders = orders.map(order => ({
+            id: order._id,
+            user: order.user,
+            shippingAddress: order.shippingAddress,
+            paymentMethod: order.paymentMethod,
+            itemsPrice: order.itemsPrice,
+            taxPrice: order.taxPrice,
+            shippingPrice: order.shippingPrice,
+            totalPrice: order.totalPrice,
+            createdAt: order.createdAt,
+            updatedAt: order.updatedAt,
+            isPaid: order.isPaid,
+            paidAt: order.paidAt,
+            isDelivered: order.isDelivered,
+            deliveredAt: order.deliveredAt,
+            isCancelled: order.isCancelled,
+            cancelledAt: order.cancelledAt,
+            cancellationReason: order.cancellationReason,
+        }));
+
+        const csv = parse(jsonOrders, { fields });
+
+        fs.writeFileSync('orders.csv', csv);
+        res.download('orders.csv'); // Automatically download the CSV file
+    } catch (error) {
+        console.error('Error exporting orders:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 
 export {
     addOrderItems,
@@ -154,5 +215,6 @@ export {
     updateOrderToPaid,
     updateOrderToDelivered,
     getOrders,
-    cancelOrder
+    cancelOrder,
+    exportOrdersToCSV,
 }

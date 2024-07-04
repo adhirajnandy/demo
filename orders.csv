@@ -1,0 +1,2 @@
+"id","User ID","shippingAddress","paymentMethod","itemsPrice","taxPrice","shippingPrice","totalPrice","createdAt","updatedAt","isPaid","paidAt","isDelivered","deliveredAt","isCancelled","cancelledAt","cancellationReason"
+"66868d612f1c7ecefd1a3c4b","66792a4dc73ceed80e97d788","{""address"":""RK Road"",""city"":""Nagaon"",""postalCode"":782003,""country"":""India""}","PayPal",399.99,60,0,459.99,"2024-07-04T11:54:09.600Z","2024-07-04T11:54:35.963Z",true,"2024-07-04T11:54:35.962Z",false,,false,,

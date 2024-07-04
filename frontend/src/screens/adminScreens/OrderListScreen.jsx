@@ -1,20 +1,59 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button } from 'react-bootstrap';
-import { FaTimesCircle, FaCheckCircle } from 'react-icons/fa';
+import { Table, Button, Row, Col } from 'react-bootstrap';
+import { FaTimesCircle, FaCheckCircle, FaDownload } from 'react-icons/fa';
 import { useGetOrdersQuery } from '../../slices/ordersApiSlice';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
+import { toast } from 'react-toastify'; 
+import axios from 'axios';
 
 
 const OrderListScreen = () => {
 
   const {data : orders, isLoading, error} = useGetOrdersQuery();
 
+  const downloadCsvHandler = async () => {
+    try {
+      const response = await axios.get(`/api/orders/export/csv`, {
+        responseType: 'blob', // Set the response type to Blob
+      });
+
+      // Create a Blob object from the CSV data
+      const blob = new Blob([response.data], { type: 'text/csv' });
+
+      // Create a URL for the Blob object
+      const url = window.URL.createObjectURL(blob);
+
+      // Create an anchor element
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'orders.csv'; // Set the file name for download
+      document.body.appendChild(a);
+      a.click(); // Programmatically click the anchor element to trigger the download
+      document.body.removeChild(a); // Clean up: remove the anchor element from the document
+
+      toast.success('Orders exported successfully.');
+    } catch (err) {
+      toast.error( 'Failed to export orders.');
+    }
+  };
+
 
   return (
     <>
-      <h1 className='fw-bolder'>Orders</h1>
+      <Row className='align-items-center'>
+        <Col>
+          <h1 className='fw-bolder'>Orders</h1>
+        </Col>
+        <Col className='text-end'>
+          <Button className='btn-sm m-3 fw-semibold' onClick={downloadCsvHandler}>
+              <FaDownload/> Export Orders
+          </Button>
+        </Col>
+
+      </Row>
+      
       {isLoading ? <Loader /> : error ? <Message variant= 'danger'>{error?.data?.message}</Message> : 
         (
           <Table bordered hover responsive className='table-sm custom-table'>

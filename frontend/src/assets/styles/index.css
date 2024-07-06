@@ -100,3 +100,31 @@ table th {
 .custom-table tbody tr:hover {
   background-color: rgb(184, 184, 184); /* Darker hover effect */
 }
+
+.footer {
+  background-color: #343a40; /* Dark background color */
+  color: #ffffff; /* Text color */
+  padding: 20px 0; /* Padding top and bottom */
+  position: relative; /* Relative positioning */
+  bottom: 0; /* Stick to the bottom */
+  width: 100%; /* Full width */
+}
+
+.footer-text {
+  margin-bottom: 0; /* Remove bottom margin */
+  font-size: 16px; /* Font size */
+}
+
+.social-icons {
+  font-size: 24px; /* Adjust icon size */
+}
+
+.social-icon {
+  color: #ffffff; /* Icon color */
+  margin: 0 10px; /* Margin between icons */
+}
+
+.social-icon:hover {
+  color: #ffc107; /* Hover color */
+}
+

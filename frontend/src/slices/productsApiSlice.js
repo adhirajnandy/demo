@@ -1,4 +1,4 @@
-import { PRODUCTS_URL, UPLOAD_URL } from "../constants";
+import { PRODUCTS_URL, UPLOAD_URL, UPLOADCSV_URL } from "../constants";
 import { apiSlice } from "./apiSlice";
 
 export const productsApiSlice = apiSlice.injectEndpoints({
@@ -80,9 +80,16 @@ export const productsApiSlice = apiSlice.injectEndpoints({
                 method: 'GET',
             }),
             keepUnusedDataFor: 5,
+        }),
+        uploadProduct: builder.mutation({
+            query: (data) => ({
+                url: `${UPLOADCSV_URL}`,
+                method: 'POST',
+                body: data
+            }),
         })
     }), 
         
 });
 
-export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation, useUpdateProductMutation, useUploadProductImageMutation, useDeleteProductMutation, useCreateReviewMutation, useGetTopProductsQuery } = productsApiSlice;
+export const { useGetProductsQuery, useGetProductDetailsQuery, useCreateProductMutation, useUpdateProductMutation, useUploadProductImageMutation, useDeleteProductMutation, useCreateReviewMutation, useGetTopProductsQuery, useUploadProductMutation } = productsApiSlice;

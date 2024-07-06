@@ -1,14 +1,14 @@
 import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button, Row, Col } from 'react-bootstrap';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { Table, Button, Row, Col, Form } from 'react-bootstrap';
+import { FaEdit, FaTrash, FaUpload } from 'react-icons/fa';
 import { useGetProductsQuery, useCreateProductMutation, useDeleteProductMutation } from '../../slices/productsApiSlice';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import Paginate from '../../components/Paginate';
-
+import { useUploadProductMutation } from '../../slices/productsApiSlice';
 
 const ProductListScreen = () => {
 
@@ -19,6 +19,8 @@ const ProductListScreen = () => {
     const [createProduct, {isLoading: loadingCreate}] = useCreateProductMutation();
 
     const [deleteProduct, {isLoading: loadingDelete}] = useDeleteProductMutation();
+
+    const [uploadProduct, {isLoading: loadingUpload}] = useUploadProductMutation();
 
     const createProductHandler = async() => {
         if (window.confirm('Are you sure you want to create a new Product?')) {
@@ -42,6 +44,20 @@ const ProductListScreen = () => {
         }
     };
 
+    const uploadProductHandler = async(e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('csvFile', file);
+
+        try {
+            await uploadProduct(formData);
+            refetch();
+            toast.success('Product Uploaded');
+        } catch (err) {
+            toast.error(err?.data?.message || 'Failed to Upload Product')
+        }
+    }
+
 
   return (
     <>
@@ -53,6 +69,7 @@ const ProductListScreen = () => {
                 <Button className='btn-sm m-3 fw-semibold' onClick={ createProductHandler }>
                     <FaEdit/> Create Product
                 </Button>
+                
             </Col>
 
         </Row>
@@ -96,7 +113,13 @@ const ProductListScreen = () => {
                             ))}
                     </tbody>
                 </Table>
-                
+                <Row className='justify-content-center'>
+                    <h3 className='fw-semibold' >Uplaod Products </h3>
+                    <Form.Group controlId='csvFile' className='mb-5'>
+                        <Form.Control type='file' label='Choose CSV' onChange={uploadProductHandler} />
+                    </Form.Group>
+
+                </Row>
                 <Row className='justify-content-center'>
                     <Col xs='auto'>
                         <Paginate

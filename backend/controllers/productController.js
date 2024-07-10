@@ -1,8 +1,6 @@
 import asyncHandler from "../middleware/asyncHandler.js";
 import Product  from "../models/productModel.js";
 
-
-// Fetching all products from the database 
 const getProducts = asyncHandler(async (req,res) => {
     const pageSize = 8 //Limiting the number of products that are shown in the home page
     
@@ -10,14 +8,15 @@ const getProducts = asyncHandler(async (req,res) => {
     
     const keyword = req.query.keyword ? { name: {$regex: req.query.keyword, $options: 'i'}} : {};
     
-    const count = await Product.countDocuments({...keyword}); // To provide us the total number of Products
+    const minPrice = req.query.minPrice ? Number(req.query.minPrice) : 0;
+    const maxPrice = req.query.maxPrice ? Number(req.query.maxPrice) : Number.MAX_SAFE_INTEGER;
     
-    const products = await Product.find({...keyword})
+    const count = await Product.countDocuments({...keyword, price: { $gte: minPrice, $lte: maxPrice }}); // To provide us the total number of Products
+    
+    const products = await Product.find({...keyword, price: { $gte: minPrice, $lte: maxPrice }})
     .limit(pageSize)
     .skip(pageSize * (page - 1));
     res.json({products, page, pages: Math.ceil(count / pageSize)});//passing an object consisting of three things that is the products, page and the total number of pages that are required
-
-
 });
 
 //Fetching products by Id
@@ -146,5 +145,7 @@ const getTopProducts = asyncHandler(async (req,res) => {
 
     res.status(200).json(products);
 });
+
+
 
 export { getProducts, getProductById, createProduct, updateProduct, deleteProduct, createProductReview, getTopProducts };

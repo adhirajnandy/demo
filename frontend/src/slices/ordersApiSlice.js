@@ -56,8 +56,30 @@ export const orderApiSlice = apiSlice.injectEndpoints({
                 url: `${ORDERS_URL}/${orderId}/cancel`,
                 method: 'PUT',
             })
-        })
+        }),
+        returnOrder: builder.mutation({
+            query: ({ orderId, data }) => ({
+                url: `${ORDERS_URL}/${orderId}/return`,
+                method: 'POST',
+                body: data,
+            }),
+            invalidatesTags: ['Order'],
+        }),
+        approveReturn: builder.mutation({
+            query: (orderId) => ({
+                url: `${ORDERS_URL}/${orderId}/return/approve`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['Order'],
+        }),
+        rejectReturn: builder.mutation({
+            query: (orderId) => ({
+                url: `${ORDERS_URL}/${orderId}/return/reject`,
+                method: 'PUT',
+            }),
+            invalidatesTags: ['Order'],
+        }),
     }), 
 });
 
-export const { useCreateOrderMutation, useGetOrderDetailsQuery, usePayOrderMutation, useGetPayPalClientIdQuery, useGetMyOrdersQuery, useGetOrdersQuery, useDeliverOrderMutation, useCancelOrderMutation } = orderApiSlice;
+export const { useCreateOrderMutation, useGetOrderDetailsQuery, usePayOrderMutation, useGetPayPalClientIdQuery, useGetMyOrdersQuery, useGetOrdersQuery, useDeliverOrderMutation, useCancelOrderMutation, useReturnOrderMutation, useApproveReturnMutation, useRejectReturnMutation } = orderApiSlice;

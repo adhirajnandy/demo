@@ -1,6 +1,7 @@
 import mongoose, { mongo } from "mongoose";
 import User from "./userModel.js";
 
+
 const orderSchema = new mongoose.Schema({
 
     user:{
@@ -106,6 +107,38 @@ const orderSchema = new mongoose.Schema({
     },
 
     cancellationReason: {
+        type: String,
+    },
+    isReturned: {
+        type: Boolean,
+        default: false,
+    },
+    returnedAt: {
+        type: Date,
+    },
+    returnReason: {
+        type: String,
+    },
+    returnRequestedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    returnRequestedAt: {
+        type: Date,
+    },
+    returnStatus: {
+        type: String,
+        enum: ['pending', 'approved', 'rejected'],
+        default: 'pending',
+    },
+    returnProcessedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    returnProcessedAt: {
+        type: Date,
+    },
+    returnProcessedNotes: {
         type: String,
     },
 

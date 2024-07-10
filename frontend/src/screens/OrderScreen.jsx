@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useDeliverOrderMutation } from "../slices/ordersApiSlice";
 import { useCancelOrderMutation } from "../slices/ordersApiSlice";
+import { LinkContainer } from "react-router-bootstrap";
 
 const OrderScreen = () => {
     const { id: orderId } = useParams();
@@ -133,6 +134,13 @@ const OrderScreen = () => {
                                         <h2 className="fw-bolder">Order Status: </h2>
                                         <Message variant='success'>Order Cancelled Successfully</Message>
                                     </ListGroup.Item>)}
+                                {order.isReturned && (
+                                    <ListGroup.Item>
+                                        <h2 className="fw-bolder">Return Initiated: </h2>
+                                        {order.returnStatus === 'pending' && <Message variant='warning'>{order.returnStatus}</Message>}
+                                        {order.returnStatus === 'approved' && <Message variant='success'>{order.returnStatus} and refund initiated</Message>}
+                                        {order.returnStatus === 'rejected' && <Message variant='danger'>{order.returnStatus}</Message>}
+                                    </ListGroup.Item>)}
                                 <ListGroup.Item>
                                     <h2 className="fw-bolder">Order Items</h2>
                                     {order.orderItems.map((item, index) => (
@@ -203,6 +211,29 @@ const OrderScreen = () => {
                                         onClick={cancelOrderHandler}>
                                             Cancel Order
                                         </Button>
+                                    </ListGroup.Item>
+                                )}
+                                {/* Button to Initiate Return */}
+                                {order.isPaid && order.isDelivered && !order.isCancelled && !userInfo.isAdmin && (
+                                    <ListGroup.Item>
+                                        {!order.isReturned && !userInfo.isAdmin &&
+                                        <LinkContainer to={`/order/${order._id}/return`}>
+                                            <Button variant='primary' className='btn mx-2'>
+                                                Return
+                                            </Button>
+                                        </LinkContainer>
+                                        }
+                                    </ListGroup.Item>
+                                )}
+                                {userInfo.isAdmin && order.isReturned && (
+                                    
+                                    <ListGroup.Item>
+                                            
+                                        <LinkContainer to={`/admin/${order._id}/status`}>
+                                            <Button variant='primary' className='btn mx-2' disabled={order.returnStatus !== 'pending' }>
+                                                Update Status
+                                            </Button>
+                                        </LinkContainer>
                                     </ListGroup.Item>
                                 )}
                             </ListGroup>

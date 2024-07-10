@@ -169,6 +169,15 @@ const exportOrdersToCSV = asyncHandler(async (req, res) => {
         'isCancelled',
         'cancelledAt',
         'cancellationReason',
+        'isReturned',
+        'returnedAt',
+        'returnReason',
+        'returnRequestedBy',
+        'returnRequestedAt',
+        'returnStatus',
+        'returnProcessedBy',
+        'returnProcessedAt',
+        'returnProcessedNotes',
     ];
 
     try {
@@ -196,6 +205,16 @@ const exportOrdersToCSV = asyncHandler(async (req, res) => {
             isCancelled: order.isCancelled,
             cancelledAt: order.cancelledAt,
             cancellationReason: order.cancellationReason,
+            isReturned: order.isReturned,
+            returnedAt: order.returnedAt,
+            returnReason: order.returnReason,
+            returnRequestedBy: order.returnRequestedBy,
+            returnRequestedAt: order.returnRequestedAt,
+            returnStatus: order.returnStatus,
+            returnProcessedBy: order.returnProcessedBy,
+            returnProcessedAt: order.returnProcessedAt,
+            returnProcessedNotes: order.returnProcessedNotes,
+
         }));
 
         const csv = parse(jsonOrders, { fields });
@@ -208,6 +227,91 @@ const exportOrdersToCSV = asyncHandler(async (req, res) => {
     }
 });
 
+// Description: Request return for an order
+// Route: POST /api/orders/:id/return
+// Access: Private
+const requestReturn = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        if (order.isReturned) {
+            res.status(400);
+            throw new Error('Order is already returned');
+        }
+
+        if (!order.isDelivered) {
+            res.status(400);
+            throw new Error('Order has not been delivered yet');
+        }
+
+        order.isReturned = true;
+        order.returnedAt = Date.now();
+        order.returnReason = req.body.returnReason || '';
+        order.returnRequestedBy = req.user._id;
+        order.returnRequestedAt = Date.now();
+        order.returnStatus = 'pending'; // Initial status when return request is made
+
+        const returnedOrder = await order.save();
+
+        res.status(200).json(returnedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+});
+
+// Description: Approve return for an order
+// Route: PUT /api/orders/:id/return/approve
+// Access: Private/Admin
+const approveReturn = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        if (!order.isReturned || order.returnStatus !== 'pending') {
+            res.status(400);
+            throw new Error('Order return cannot be approved');
+        }
+
+        order.returnStatus = 'approved';
+        order.returnProcessedBy = req.user._id;
+        order.returnProcessedAt = Date.now();
+        order.returnProcessedNotes = req.body.returnProcessedNotes || '';
+
+        const approvedOrder = await order.save();
+
+        res.status(200).json(approvedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+});
+
+// Description: Reject return for an order
+// Route: PUT /api/orders/:id/return/reject
+// Access: Private/Admin
+const rejectReturn = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+        if (!order.isReturned || order.returnStatus !== 'pending') {
+            res.status(400);
+            throw new Error('Order return cannot be rejected');
+        }
+
+        order.returnStatus = 'rejected';
+        order.returnProcessedBy = req.user._id;
+        order.returnProcessedAt = Date.now();
+        order.returnProcessedNotes = req.body.returnProcessedNotes || '';
+
+        const rejectedOrder = await order.save();
+
+        res.status(200).json(rejectedOrder);
+    } else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+});
+
 export {
     addOrderItems,
     getMyOrders,
@@ -217,4 +321,7 @@ export {
     getOrders,
     cancelOrder,
     exportOrdersToCSV,
+    requestReturn,
+    approveReturn,
+    rejectReturn,
 }

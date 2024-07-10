@@ -21,7 +21,7 @@ const ReturnOrderScreen = () => {
             setLoading(true);
             await returnOrder({ orderId, data: { returnReason } });
             toast.success('Return Request Submitted');
-            navigate('/order/:id');
+            navigate('/');
             setReturnReason('');
         } catch (error) {
             toast.error(error?.data?.message || error.message);

@@ -53,6 +53,7 @@ const HomeScreen = () => {
          </Card>
         </Col>
         <Col md={9} className="products-section">
+          <h2 className='fw-semibold'>Latest Products</h2>
           {isLoading ? (
             <Loader />
           ) : error ? (

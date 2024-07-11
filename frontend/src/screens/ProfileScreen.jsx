@@ -105,6 +105,8 @@ const ProfileScreen = () => {
                             <th>DATE</th>
                             <th>TOTAL</th>
                             <th>PAID</th>
+                            <th>CANCELLED</th>
+                            <th>RETURN</th>
                             <th>DELIVERED</th>
                             <th></th>
                         </tr>
@@ -117,6 +119,20 @@ const ProfileScreen = () => {
                                 <td className='fw-semibold'>${order.totalPrice}</td>
                                 <td >
                                     {order.isPaid ? (
+                                        <FaCheckCircle style={{color: 'green'}}/>
+                                    ) : (
+                                        <FaTimesCircle style={{color: 'red'}}/>
+                                    )}
+                                </td>
+                                <td>
+                                    {order.isCancelled ? (
+                                        <FaCheckCircle style={{color: 'green'}}/>
+                                    ) : (
+                                        <FaTimesCircle style={{color: 'red'}}/>
+                                    )}
+                                </td>
+                                <td>
+                                    {order.isReturned ? (
                                         <FaCheckCircle style={{color: 'green'}}/>
                                     ) : (
                                         <FaTimesCircle style={{color: 'red'}}/>

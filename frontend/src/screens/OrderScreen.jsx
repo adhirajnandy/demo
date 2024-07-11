@@ -184,7 +184,7 @@ const OrderScreen = () => {
                                         <Col>${order.totalPrice}</Col>
                                     </Row>
                                 </ListGroup.Item>
-                                {!order.isPaid && !order.isCancelled && (
+                                {!order.isPaid && !order.isCancelled && !userInfo.isAdmin && (
                                     <ListGroup.Item>
                                         {loadingPay || isPending ? <Loader /> : (
                                             <PayPalButtons

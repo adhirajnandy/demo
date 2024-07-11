@@ -66,6 +66,7 @@ const OrderListScreen = () => {
                 <th>PAID</th>
                 <th>DELIVERED</th>
                 <th>CANCELLATION STATUS</th>
+                <th>RETURN INITIATED</th>
                 <th>ORDER DETAILS</th>
 
               </tr>
@@ -93,6 +94,13 @@ const OrderListScreen = () => {
                   </td>
                   <td className='fw-semibold'>
                     {order.isCancelled ? (
+                    <FaCheckCircle style={{color:'green'}}/>
+                  ) : (
+                    <FaTimesCircle style={{color:'red'}}/>
+                  )}
+                  </td>
+                  <td className='fw-semibold'>
+                    {order.isReturned ? (
                     <FaCheckCircle style={{color:'green'}}/>
                   ) : (
                     <FaTimesCircle style={{color:'red'}}/>

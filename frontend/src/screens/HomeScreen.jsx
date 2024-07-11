@@ -10,47 +10,56 @@ import { useParams } from 'react-router-dom';
 
 const HomeScreen = () => {
   const { pageNumber, keyword } = useParams();
-  const [priceRange, setPriceRange] = useState('');
+  const [priceRange, setPriceRange] = useState({
+    min: 0,
+    max: Number.MAX_SAFE_INTEGER
+  });
   const { data, isLoading, error } = useGetProductsQuery({
     pageNumber,
     keyword,
-    minPrice: priceRange ? parseInt(priceRange.split('-')[0]) : 0,
-    maxPrice: priceRange ? parseInt(priceRange.split('-')[1]) : Number.MAX_SAFE_INTEGER,
+    minPrice: priceRange.min,
+    maxPrice: priceRange.max,
   });
 
   // Define price range options
   const priceRangeOptions = [
-    { label: 'Any Price', value: '' },
-    { label: 'Under $25', value: '0-25' },
-    { label: '$25 to $50', value: '25-50' },
-    { label: '$50 to $100', value: '50-100' },
-    { label: '$100 to $200', value: '100-200' },
-    { label: 'Over $200', value: '200-1000000' },
+    { label: 'Price', value: { min: 0, max: Number.MAX_SAFE_INTEGER } },
+    { label: 'Under $25', value: { min: 0, max: 25 } },
+    { label: '$25 to $50', value: { min: 25, max: 50 } },
+    { label: '$50 to $100', value: { min: 50, max: 100 } },
+    { label: '$100 to $200', value: { min: 100, max: 200 } },
+    { label: 'Over $200', value: { min: 200, max: Number.MAX_SAFE_INTEGER } },
   ];
+
+  const handlePriceRangeChange = (selectedRange) => {
+    setPriceRange(selectedRange);
+  };
 
   return (
     <>
       {!keyword && <ProductCarousel />}
       <Row className="justify-content-center">
         <Col md={3} className="filters-section p-3 rounded">
-         <Card className=' py-2 pb-2 px-2'>
-
-         <h5 className="fw-bold mb-4">Filters</h5>
-          <Form>
-            {priceRangeOptions.map((option, index) => (
-              <Form.Check
-                key={index}
-                type="checkbox"
-                id={`priceRange-${index}`}
-                label={option.label}
-                value={option.value}
-                checked={priceRange === option.value}
-                onChange={() => setPriceRange(option.value)}
+          <Card className='py-2 pb-2 px-2'>
+            <h5 className="fw-bold mb-4">Filters</h5>
+            <Form>
+              <Form.Select
+                value={`${priceRange.min}-${priceRange.max}`}
+                onChange={(e) => {
+                  const [min, max] = e.target.value.split('-');
+                  handlePriceRangeChange({ min: parseInt(min), max: parseInt(max) });
+                }}
+                aria-label="Price Range"
                 className="mb-2"
-              />
-            ))}
-          </Form>
-         </Card>
+              >
+                {priceRangeOptions.map((option, index) => (
+                  <option key={index} value={`${option.value.min}-${option.value.max}`}>
+                    {option.label}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form>
+          </Card>
         </Col>
         <Col md={9} className="products-section">
           <h2 className='fw-semibold'>Latest Products</h2>
@@ -75,8 +84,8 @@ const HomeScreen = () => {
                     pages={data.pages}
                     page={data.page}
                     keyword={keyword || ''}
-                    minPrice={priceRange ? parseInt(priceRange.split('-')[0]) : 0}
-                    maxPrice={priceRange ? parseInt(priceRange.split('-')[1]) : Number.MAX_SAFE_INTEGER}
+                    minPrice={priceRange.min}
+                    maxPrice={priceRange.max}
                   />
                 </Col>
               </Row>

@@ -8,6 +8,7 @@ const getProducts = asyncHandler(async (req,res) => {
     
     const keyword = req.query.keyword ? { name: {$regex: req.query.keyword, $options: 'i'}} : {};
     
+    //For adding the Price Filter Functionality in the Web App
     const minPrice = req.query.minPrice ? Number(req.query.minPrice) : 0;
     const maxPrice = req.query.maxPrice ? Number(req.query.maxPrice) : Number.MAX_SAFE_INTEGER;
     

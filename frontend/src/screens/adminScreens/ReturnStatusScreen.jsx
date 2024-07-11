@@ -5,6 +5,7 @@ import { useApproveReturnMutation, useRejectReturnMutation } from '../../slices/
 import { useGetOrderDetailsQuery } from '../../slices/ordersApiSlice';
 import { useParams } from 'react-router-dom';
 import Loader from '../../components/Loader';
+import Message from '../../components/Message';
 
 const ReturnStatusScreen = () => {
     const { id: orderId } = useParams();
@@ -56,7 +57,11 @@ const ReturnStatusScreen = () => {
             <h2 className="mb-4 fw-bolder">Return Status Update</h2>
             <Card>
                 <Card.Body>
-                    <Card.Title>Return Status: {order ? order.returnStatus : 'Loading...'}</Card.Title>
+                    <Card.Title>
+                        {/* <span className='mb-4'>Return Status: {order ? order.returnStatus : 'Loading...'}</span> */}
+                        <Message>Remarks: {order.returnReason}</Message>
+                    </Card.Title>
+
                     <Button
                         type='button'
                         variant='success'
